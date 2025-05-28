@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getPosts } from '../../lib/sanity';
+import PostGrid from '../../components/blog/PostGrid.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+
+const posts = await getPosts();
+---
+
+<Layout title="Writing | Personal Blog">
+  <div class="blog-container">
+    <div class="blog-header">
+      <h1>Writing</h1>
+      <p>Unfiltered thoughts on identity, boundaries, and modern existence</p>
+    </div>
+
+    {posts.length > 0 ? (
+      <div class="post-list">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <div class="no-posts">
+        <p>No writings yet. Thoughts forming in the ether.</p>
+        <a href="/studio" class="cta-button">Begin</a>
+      </div>
+    )}
+  </div>
+</Layout>
+
+<style>
+  .blog-container {
+    padding: 1rem 0 3rem;
+  }
+
+  .blog-header {
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2rem;
+  }
+
+  .blog-header h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .blog-header p {
+    font-size: 1.2rem;
+    max-width: 600px;
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .no-posts {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .no-posts p {
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .cta-button {
+    display: inline-block;
+    border-bottom: 1px solid var(--primary-color);
+    transition: color 0.2s ease;
+  }
+
+  .cta-button:hover {
+    color: var(--primary-color);
+  }
+</style>

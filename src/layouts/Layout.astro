@@ -1,0 +1,174 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { title = 'Personal Blog', description = 'My personal space - transgressive, inclusive, modern' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<nav>
+					<a href="/" class="logo">myself.</a>
+					<div class="nav-links">
+						<a href="/">Home</a>
+						<a href="/blog">Writing</a>
+						<a href="/categories">Thoughts</a>
+						<a href="/about">About Me</a>
+						<a href="/studio" class="admin-link">Admin</a>
+					</div>
+				</nav>
+			</div>
+		</header>
+		<main>
+			<div class="container">
+				<slot />
+			</div>
+		</main>
+		<footer>
+			<div class="container">
+				<p>&copy; {new Date().getFullYear()} myself. no rights reserved.</p>
+			</div>
+		</footer>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--primary-color: #ff4d4d;
+		--text-color: #111111;
+		--bg-color: #ffffff;
+		--secondary-bg: #f8f8f8;
+		--border-color: #eeeeee;
+		--heading-font: 'Space Grotesk', sans-serif;
+		--body-font: 'Space Grotesk', sans-serif;
+	}
+
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	html,
+	body {
+		font-family: var(--body-font);
+		color: var(--text-color);
+		background-color: var(--bg-color);
+		line-height: 1.6;
+		font-weight: 300;
+		font-size: 1.05rem;
+	}
+
+	.container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	a {
+		color: var(--text-color);
+		text-decoration: none;
+		border-bottom: 1px solid var(--primary-color);
+		transition: color 0.2s ease;
+	}
+
+	a:hover {
+		color: var(--primary-color);
+		text-decoration: none;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: var(--heading-font);
+		font-weight: 500;
+		line-height: 1.2;
+		margin-bottom: 1rem;
+	}
+
+	p {
+		margin-bottom: 1rem;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	header {
+		padding: 2rem 0;
+		margin-bottom: 1rem;
+	}
+
+	nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.logo {
+		font-size: 1.8rem;
+		font-weight: 700;
+		color: var(--primary-color);
+		border-bottom: none;
+	}
+
+	.nav-links {
+		display: flex;
+		gap: 1.5rem;
+	}
+	
+	.nav-links a {
+		border-bottom: none;
+	}
+
+	.admin-link {
+		color: var(--primary-color);
+	}
+
+	.admin-link:hover {
+		opacity: 0.8;
+	}
+
+	main {
+		min-height: calc(100vh - 180px);
+		padding: 1rem 0 3rem;
+	}
+
+	footer {
+		padding: 2rem 0;
+		text-align: center;
+		font-size: 0.9rem;
+		color: #666;
+	}
+
+	footer p {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 768px) {
+		nav {
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		.nav-links {
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+	}
+</style>

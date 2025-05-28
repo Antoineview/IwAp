@@ -1,0 +1,126 @@
+---
+import { urlForImage } from '../../lib/sanity';
+
+interface Props {
+  post: {
+    _id: string;
+    title: string;
+    slug: { current: string };
+    mainImage?: any;
+    publishedAt?: string;
+    categories?: string[];
+    author?: {
+      name: string;
+      image?: any;
+    };
+  };
+}
+
+const { post } = Astro.props;
+const imageUrl = post.mainImage ? urlForImage(post.mainImage) : null;
+const formattedDate = post.publishedAt 
+  ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric'
+    })
+  : null;
+---
+
+<article class="post-card">
+  <div class="content">
+    {post.categories && post.categories.length > 0 && (
+      <div class="categories">
+        {post.categories.map((category: string) => (
+          <a href={`/categories/${category.toLowerCase()}`} class="category">{category}</a>
+        ))}
+      </div>
+    )}
+    <h2><a href={`/blog/${post.slug.current}`}>{post.title}</a></h2>
+    {formattedDate && <p class="date">{formattedDate}</p>}
+    
+    {imageUrl && (
+      <a href={`/blog/${post.slug.current}`} class="image-container">
+        <img src={imageUrl} alt={post.title} />
+      </a>
+    )}
+    
+    {post.author && (
+      <div class="author">
+        <span>— {post.author.name}</span>
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .post-card {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .image-container {
+    display: block;
+    margin: 1rem 0;
+    border-bottom: none;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  h2 a {
+    color: var(--text-color);
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  h2 a:hover {
+    color: var(--primary-color);
+  }
+
+  .date {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .category {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  .category:hover {
+    opacity: 0.8;
+  }
+
+  .author {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: #666;
+  }
+</style>

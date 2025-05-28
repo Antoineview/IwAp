@@ -1,0 +1,110 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getPostsByCategory } from '../../lib/sanity';
+import PostCard from '../../components/blog/PostCard.astro';
+
+export async function getStaticPaths() {
+  // This would normally fetch all categories to generate paths,
+  // but for simplicity we'll allow any category slug and handle 404s in the component
+  return [{ params: { category: 'placeholder' } }];
+}
+
+const { category } = Astro.params;
+const posts = await getPostsByCategory(category);
+
+// Format the category name for display (capitalize first letter)
+const formattedCategory = category
+  ? category.charAt(0).toUpperCase() + category.slice(1)
+  : '';
+---
+
+<Layout title={`${formattedCategory} | myself.`}>
+  <div class="category-container">
+    <div class="category-header">
+      <h1>{formattedCategory}</h1>
+      <p>My thoughts on this theme</p>
+    </div>
+
+    {posts.length > 0 ? (
+      <div class="post-list">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <div class="no-posts">
+        <p>Nothing here yet. My thoughts on this theme are still forming.</p>
+        <div class="buttons">
+          <a href="/categories" class="back-link">← all themes</a>
+          <a href="/studio" class="studio-link">write something</a>
+        </div>
+      </div>
+    )}
+  </div>
+</Layout>
+
+<style>
+  .category-container {
+    padding: 1rem 0 3rem;
+  }
+
+  .category-header {
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2rem;
+  }
+
+  .category-header h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .category-header p {
+    font-size: 1.2rem;
+    max-width: 600px;
+  }
+  
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .no-posts {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .no-posts p {
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .back-link, .studio-link {
+    display: inline-block;
+    border-bottom: 1px solid var(--primary-color);
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover, .studio-link:hover {
+    color: var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+    .category-header h1 {
+      font-size: 2.5rem;
+    }
+    
+    .buttons {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>

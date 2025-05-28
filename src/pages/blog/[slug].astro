@@ -1,0 +1,204 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getPost, getPosts } from '../../lib/sanity';
+import { urlForImage } from '../../lib/sanity';
+import { PortableText } from '@portabletext/react';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts
+    .filter(post => post.slug?.current)
+    .map(post => ({ params: { slug: post.slug.current } }));
+}
+
+const { slug } = Astro.params;
+const post = await getPost(slug);
+
+// Handle 404 for non-existent posts
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const publishedDate = post.publishedAt 
+  ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  : null;
+
+const imageUrl = post.mainImage ? urlForImage(post.mainImage) : null;
+---
+
+<Layout title={`${post.title} | myself.`}>
+  <article class="post-container">
+    <header class="post-header">
+      <div class="post-meta">
+        {publishedDate && <span class="date">{publishedDate}</span>}
+        {post.categories && post.categories.length > 0 && (
+          <div class="post-categories">
+            {post.categories.map((category) => (
+              <a href={`/categories/${category.toLowerCase()}`} class="category">
+                {category}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+      
+      <h1>{post.title}</h1>
+      
+      {post.author && (
+        <div class="author">
+          <span>— {post.author.name}</span>
+        </div>
+      )}
+    </header>
+
+    {imageUrl && (
+      <div class="featured-image">
+        <img src={imageUrl} alt={post.title} />
+      </div>
+    )}
+
+    <div class="post-content">
+      <PortableText value={post.body} />
+    </div>
+    
+    <footer class="post-footer">
+      <a href="/blog" class="back-link">← all writings</a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .post-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 0 4rem;
+  }
+
+  .post-header {
+    margin-bottom: 3rem;
+  }
+
+  .post-meta {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .post-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .category {
+    color: var(--primary-color);
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  .category:hover {
+    opacity: 0.8;
+  }
+
+  h1 {
+    font-size: 2.75rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    color: var(--primary-color);
+    font-weight: 700;
+  }
+
+  .author {
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  .featured-image {
+    margin-bottom: 3rem;
+  }
+
+  .featured-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .post-content {
+    line-height: 1.8;
+    font-size: 1.15rem;
+  }
+
+  .post-content :global(h2) {
+    font-size: 1.6rem;
+    margin: 2.5rem 0 1rem;
+    font-weight: 500;
+  }
+
+  .post-content :global(h3) {
+    font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+    font-weight: 500;
+  }
+
+  .post-content :global(p) {
+    margin-bottom: 1.75rem;
+  }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    margin-left: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .post-content :global(blockquote) {
+    border-left: 2px solid var(--primary-color);
+    padding-left: 1.5rem;
+    font-style: italic;
+    margin: 2rem 0;
+  }
+
+  .post-content :global(img) {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem 0;
+  }
+
+  .post-content :global(a) {
+    color: var(--text-color);
+    border-bottom: 1px solid var(--primary-color);
+    text-decoration: none;
+  }
+  
+  .post-content :global(a:hover) {
+    color: var(--primary-color);
+  }
+  
+  .post-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .back-link {
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+</style>

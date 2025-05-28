@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PostGrid from '../components/blog/PostGrid.astro';
+import PostCard from '../components/blog/PostCard.astro';
+import { getPosts, getSiteSettings } from '../lib/sanity';
+
+const recentPosts = await getPosts();
+const siteSettings = await getSiteSettings();
+const siteTitle = siteSettings?.siteTitle || 'myself. | Personal Blog';
+const siteDescription = siteSettings?.siteDescription || 'My personal space - transgressive, inclusive, modern';
+const homeHero = siteSettings?.homeHero || "Hi, I'm Me.";
+const homeHeroDesc = siteSettings?.siteDescription || "This is my space for transgressive, inclusive, and modern thoughts.";
+const bioBlurb = siteSettings?.aboutBlurb || "I write about the spaces between, the boundaries we cross, and the future we're creating together. Nothing is off-limits here—my words might challenge, comfort, or confront.";
+---
+
+<Layout title={siteTitle} description={siteDescription}>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>{homeHero}</h1>
+      <p>{homeHeroDesc}</p>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="recent-posts">
+    <div class="section-header">
+      <h2>Recent Thoughts</h2>
+      <a href="/blog" class="view-all">All writings →</a>
+    </div>
+
+    {recentPosts.length > 0 ? (
+      <PostGrid posts={recentPosts}>
+        {recentPosts.map((post) => (
+          <PostCard slot="post" post={post} />
+        ))}
+      </PostGrid>
+    ) : (
+      <div class="no-posts">
+        <p>No posts yet. My thoughts are forming.</p>
+        <a href="/studio" class="cta-button">Write something</a>
+      </div>
+    )}
+  </section>
+
+  <!-- Bio Section -->
+  <section class="bio-section">
+    <div class="bio-content">
+      <p>{bioBlurb}</p>
+      <a href="/about" class="bio-link">More about me →</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    padding: 3rem 0;
+    text-align: left;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-weight: 700;
+  }
+
+  .hero p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+  }
+
+  /* Recent Posts Section */
+  .recent-posts {
+    margin-bottom: 3rem;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .view-all {
+    font-weight: 400;
+    border-bottom: none;
+  }
+
+  .no-posts {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .no-posts p {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Bio Section */
+  .bio-section {
+    margin: 4rem 0 2rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .bio-content {
+    max-width: 600px;
+  }
+
+  .bio-content p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .bio-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+
+  /* Button */
+  .cta-button {
+    display: inline-block;
+    border-bottom: 1px solid var(--primary-color);
+  }
+
+  .cta-button:hover {
+    color: var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .section-header {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+  }
+</style>

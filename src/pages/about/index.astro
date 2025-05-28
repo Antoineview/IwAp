@@ -1,0 +1,122 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="About Me | Personal Blog">
+  <div class="about-container">
+    <div class="about-header">
+      <h1>About Me</h1>
+    </div>
+
+    <div class="about-content">
+      <section class="about-section">
+        <h2>Who I Am</h2>
+        <p>
+          I exist in the spaces between definitions. Neither this nor that, but something more fluid and complex. 
+          I am transgender, transient, transgressive—challenging the boundaries society tries to place around us.
+        </p>
+        <p>
+          My words may comfort or confront. They might validate your experience or challenge your perspective. 
+          Either way, they come from a place of radical honesty and the belief that art should disrupt as much as it delights.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2>What I Write About</h2>
+        <p>
+          My writing explores:
+        </p>
+        <ul>
+          <li><strong>Identity</strong> — The masks we wear, the labels we adopt or reject, the fluidity of self</li>
+          <li><strong>Boundaries</strong> — Those imposed on us and those we choose to cross or maintain</li>
+          <li><strong>The Body</strong> — As political landscape, as canvas, as battlefield, as home</li>
+          <li><strong>Modern Existence</strong> — Finding meaning in a fractured, digital world</li>
+        </ul>
+        <p>
+          I believe in creating spaces where vulnerability is strength and where questioning everything is the only way forward.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2>Connect</h2>
+        <p>
+          I'm not interested in performative community—I want real connection. Reach out if something resonates, if you disagree, if you want to collaborate on dismantling something that needs to fall.
+        </p>
+        <div class="cta">
+          <a href="/blog" class="cta-button">Read My Writing</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .about-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  .about-header {
+    margin-bottom: 3rem;
+  }
+
+  .about-header h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    font-weight: 700;
+  }
+
+  .about-content {
+    line-height: 1.8;
+  }
+
+  .about-section {
+    margin-bottom: 3rem;
+  }
+
+  .about-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-weight: 500;
+  }
+
+  .about-section p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  .about-section ul {
+    margin: 0 0 1.5rem 1.5rem;
+    list-style-type: none;
+  }
+
+  .about-section li {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    position: relative;
+  }
+  
+  .about-section li::before {
+    content: "—";
+    position: absolute;
+    left: -1.5rem;
+    color: var(--primary-color);
+  }
+
+  .cta {
+    margin-top: 2rem;
+  }
+
+  .cta-button {
+    display: inline-block;
+    border-bottom: 1px solid var(--primary-color);
+    font-weight: 400;
+    transition: color 0.2s ease;
+  }
+
+  .cta-button:hover {
+    color: var(--primary-color);
+  }
+</style>

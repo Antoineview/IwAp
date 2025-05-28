@@ -1,0 +1,111 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCategories } from '../../lib/sanity';
+
+const categories = await getCategories();
+---
+
+<Layout title="Thoughts | Personal Blog">
+  <div class="categories-container">
+    <div class="categories-header">
+      <h1>Thoughts</h1>
+      <p>My writing, organized by theme</p>
+    </div>
+
+    {categories.length > 0 ? (
+      <div class="categories-list">
+        {categories.map((category) => (
+          <a href={`/categories/${category.title.toLowerCase()}`} class="category-link">
+            <h2>{category.title}</h2>
+            {category.description && <p>{category.description}</p>}
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="no-categories">
+        <p>No themes found yet. The categories are forming.</p>
+        <a href="/studio" class="cta-button">Create one</a>
+      </div>
+    )}
+  </div>
+</Layout>
+
+<style>
+  .categories-container {
+    padding: 1rem 0 3rem;
+  }
+
+  .categories-header {
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2rem;
+  }
+
+  .categories-header h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .categories-header p {
+    font-size: 1.2rem;
+    max-width: 600px;
+  }
+
+  .categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .category-link {
+    display: block;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.2s ease;
+  }
+
+  .category-link:hover {
+    color: var(--primary-color);
+  }
+
+  .category-link h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .category-link p {
+    color: #666;
+    margin-bottom: 0;
+  }
+
+  .no-categories {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .no-categories p {
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .cta-button {
+    display: inline-block;
+    border-bottom: 1px solid var(--primary-color);
+    transition: color 0.2s ease;
+  }
+
+  .cta-button:hover {
+    color: var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+    .categories-header h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 - Not Found | myself.">
+  <div class="not-found-container">
+    <h1>404</h1>
+    <h2>Not Found</h2>
+    <p>This page exists only in another dimension.</p>
+    <div class="buttons">
+      <a href="/" class="back-link">← home</a>
+      <a href="/blog" class="back-link">← writing</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .not-found-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 6rem 1rem;
+  }
+
+  h1 {
+    font-size: 8rem;
+    color: var(--primary-color);
+    margin: 0;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    font-style: italic;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    border-bottom: 1px solid var(--primary-color);
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 6rem;
+    }
+    
+    h2 {
+      font-size: 1.8rem;
+    }
+    
+    .buttons {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>
