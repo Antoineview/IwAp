@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.3.0",
+    "@astrojs/vercel": "^8.1.4",
     "@portabletext/react": "^3.0.11",
     "@sanity/astro": "^3.2.6",
     "@sanity/client": "^6.29.1",
