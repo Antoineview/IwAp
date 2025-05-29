@@ -16,7 +16,8 @@ export default defineConfig({
       useCdn: true,
       studioBasePath: '/studio'
     }), 
-    react(),
-    vercel()
-  ]
+    react()
+  ],
+  output: 'server',
+  adapter: vercel()
 });
